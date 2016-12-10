@@ -4,10 +4,8 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from rest_framework.test import APIRequestFactory, APITestCase as TestCase
-
 from knox.auth import TokenAuthentication
 from knox.models import AuthToken
-from knox.settings import CONSTANTS
 
 User = get_user_model()
 
@@ -102,3 +100,21 @@ class AuthTestCase(TestCase):
         response = self.client.post(url, {}, format='json')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.data, {"detail": "Invalid token."})
+
+    def test_update_token_key(self):
+        self.assertEqual(AuthToken.objects.count(), 0)
+        username, password = 'root', 'toor'
+        user = User.objects.create_user(
+            username, 'root@localhost.com', password)
+        token = AuthToken.objects.create(user)
+        auth_token = AuthToken.objects.first()
+        auth_token.token_key = None
+        auth_token.save()
+        rf = APIRequestFactory()
+        request = rf.get('/')
+        request.META = {'HTTP_AUTHORIZATION': 'Token {}'.format(token)}
+        TokenAuthentication().authenticate(request)
+        auth_token = AuthToken.objects.get(digest=auth_token.digest)
+        self.assertEqual(
+            token[:CONSTANTS.TOKEN_KEY_LENGTH],
+            auth_token.token_key)

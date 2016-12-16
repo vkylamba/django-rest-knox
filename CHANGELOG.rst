@@ -1,4 +1,3 @@
-######
 2.2.1
 ######
 **Please be aware: updating to his version requires applying a database migration**
@@ -8,8 +7,7 @@
 - Test for invalid token length
 - Cleanup in code and documentation
 
-######
 2.2.0
 ######
 
-- Change to support python 2.7 
+- Change to support python 2.7

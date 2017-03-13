@@ -65,6 +65,8 @@
                 
                     <li><a class="toctree-l4" href="#installing-knox">Installing Knox</a></li>
                 
+                    <li><a class="toctree-l4" href="#setup-knox">Setup knox</a></li>
+                
             
             </ul>
         
@@ -173,7 +175,11 @@ headers for Python (if you’re not using <code>pypy</code>), and headers for th
 <pre><code class="bash">pip install django-rest-knox
 </code></pre>
 
-<p>Add <code>rest_framework</code> and <code>knox</code> to your <code>INSTALLED_APPS</code></p>
+<h2 id="setup-knox">Setup knox</h2>
+<ol>
+<li>Add <code>rest_framework</code> and <code>knox</code> to your <code>INSTALLED_APPS</code>, remove
+<code>rest_framework.authtoken</code> if you were using it.</li>
+</ol>
 <pre><code class="python">INSTALLED_APPS = (
   ...
   'rest_framework',
@@ -182,7 +188,24 @@ headers for Python (if you’re not using <code>pypy</code>), and headers for th
 )
 </code></pre>
 
-<p>Remember to apply the migrations for the models</p>
+<ol>
+<li>Make knox's TokenAuthentication your default authentification class
+for django-rest-framework:</li>
+</ol>
+<pre><code class="python">REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    ...
+}
+</code></pre>
+
+<ol>
+<li>
+<p>Add the <a href="#urls-knoxurls">knox url patterns</a> to your project.</p>
+</li>
+<li>
+<p>Apply the migrations for the models</p>
+</li>
+</ol>
 <pre><code class="bash">python manage.py migrate
 </code></pre>
               

@@ -12,7 +12,7 @@
         }, 
         {
             "location": "/installation/", 
-            "text": "Installation\n\n\nRequirements\n\n\nKnox depends on \ncryptography\n to provide bindings to \nOpenSSL\n for token generation\nThis requires the OpenSSL build libraries to be available.\n\n\nWindows\n\n\nCryptography is a statically linked build, no extra steps are needed\n\n\nLinux\n\n\ncryptography\n should build very easily on Linux provided you have a C compiler,\nheaders for Python (if you\u2019re not using \npypy\n), and headers for the OpenSSL and\n\nlibffi\n libraries available on your system.\n\n\nDebian and Ubuntu:\n\n\nsudo apt-get install build-essential libssl-dev libffi-dev python3-dev python-dev\n\n\n\n\nFedora and RHEL-derivatives:\n\n\nsudo yum install gcc libffi-devel python-devel openssl-devel\n\n\n\n\nFor other systems or problems, see the \ncryptography installation docs\n\n\nInstalling Knox\n\n\nKnox should be installed with pip\n\n\npip install django-rest-knox\n\n\n\n\nAdd \nrest_framework\n and \nknox\n to your \nINSTALLED_APPS\n\n\nINSTALLED_APPS = (\n  ...\n  'rest_framework',\n  'knox',\n  ...\n)\n\n\n\n\nRemember to apply the migrations for the models\n\n\npython manage.py migrate", 
+            "text": "Installation\n\n\nRequirements\n\n\nKnox depends on \ncryptography\n to provide bindings to \nOpenSSL\n for token generation\nThis requires the OpenSSL build libraries to be available.\n\n\nWindows\n\n\nCryptography is a statically linked build, no extra steps are needed\n\n\nLinux\n\n\ncryptography\n should build very easily on Linux provided you have a C compiler,\nheaders for Python (if you\u2019re not using \npypy\n), and headers for the OpenSSL and\n\nlibffi\n libraries available on your system.\n\n\nDebian and Ubuntu:\n\n\nsudo apt-get install build-essential libssl-dev libffi-dev python3-dev python-dev\n\n\n\n\nFedora and RHEL-derivatives:\n\n\nsudo yum install gcc libffi-devel python-devel openssl-devel\n\n\n\n\nFor other systems or problems, see the \ncryptography installation docs\n\n\nInstalling Knox\n\n\nKnox should be installed with pip\n\n\npip install django-rest-knox\n\n\n\n\nSetup knox\n\n\n\n\nAdd \nrest_framework\n and \nknox\n to your \nINSTALLED_APPS\n, remove\n\nrest_framework.authtoken\n if you were using it.\n\n\n\n\nINSTALLED_APPS = (\n  ...\n  'rest_framework',\n  'knox',\n  ...\n)\n\n\n\n\n\n\nMake knox's TokenAuthentication your default authentification class\nfor django-rest-framework:\n\n\n\n\nREST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),\n    ...\n}\n\n\n\n\n\n\n\n\nAdd the \nknox url patterns\n to your project.\n\n\n\n\n\n\nApply the migrations for the models\n\n\n\n\n\n\npython manage.py migrate", 
             "title": "Installation"
         }, 
         {
@@ -37,8 +37,13 @@
         }, 
         {
             "location": "/installation/#installing-knox", 
-            "text": "Knox should be installed with pip  pip install django-rest-knox  Add  rest_framework  and  knox  to your  INSTALLED_APPS  INSTALLED_APPS = (\n  ...\n  'rest_framework',\n  'knox',\n  ...\n)  Remember to apply the migrations for the models  python manage.py migrate", 
+            "text": "Knox should be installed with pip  pip install django-rest-knox", 
             "title": "Installing Knox"
+        }, 
+        {
+            "location": "/installation/#setup-knox", 
+            "text": "Add  rest_framework  and  knox  to your  INSTALLED_APPS , remove rest_framework.authtoken  if you were using it.   INSTALLED_APPS = (\n  ...\n  'rest_framework',\n  'knox',\n  ...\n)   Make knox's TokenAuthentication your default authentification class\nfor django-rest-framework:   REST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),\n    ...\n}    Add the  knox url patterns  to your project.    Apply the migrations for the models    python manage.py migrate", 
+            "title": "Setup knox"
         }, 
         {
             "location": "/views/", 
@@ -147,13 +152,18 @@
         }, 
         {
             "location": "/changes/", 
-            "text": "Changelog\n\n\n2.2.2\n\n\n\n\nBugfix: invalid token length does no longer trigger a server error\n\n\nExtending documentation\n\n\n\n\n2.2.1\n\n\nPlease be aware: updating to his version requires applying a database migration\n\n\n\n\nIntroducing token_key to avoid loop over all tokens on login-requests\n\n\nSignals are sent on login/logout\n\n\nTest for invalid token length\n\n\nCleanup in code and documentation\n\n\n\n\n2.0.0\n\n\n\n\nHashing of tokens on the server introduced.\n\n\nUpdating to this version will clean the AuthToken table. In real terms, this\n    means all users will be forced to log in again.\n\n\n\n\n1.1.0\n\n\n\n\nLoginView\n changed to respect \nDEFAULT_AUTHENTICATION_CLASSES\n\n\n\n\n1.0.0\n\n\n\n\nInitial release", 
+            "text": "Changelog\n\n\n3.0.0\n\n\nPlease be aware: updating to this version requires applying a database migration. All clients will need to reauthenticate.\n\n\n\n\nBig performance fix: Introduction of token_key field to avoid having to compare a login request's token against each and every token in the database (issue #21)\n\n\nincreased test coverage\n\n\n\n\n2.2.2\n\n\n\n\nBugfix: invalid token length does no longer trigger a server error\n\n\nExtending documentation\n\n\n\n\n2.2.1\n\n\nPlease be aware: updating to his version requires applying a database migration\n\n\n\n\nIntroducing token_key to avoid loop over all tokens on login-requests\n\n\nSignals are sent on login/logout\n\n\nTest for invalid token length\n\n\nCleanup in code and documentation\n\n\n\n\n2.0.0\n\n\n\n\nHashing of tokens on the server introduced.\n\n\nUpdating to this version will clean the AuthToken table. In real terms, this\n    means all users will be forced to log in again.\n\n\n\n\n1.1.0\n\n\n\n\nLoginView\n changed to respect \nDEFAULT_AUTHENTICATION_CLASSES\n\n\n\n\n1.0.0\n\n\n\n\nInitial release", 
             "title": "Changes"
         }, 
         {
             "location": "/changes/#changelog", 
             "text": "", 
             "title": "Changelog"
+        }, 
+        {
+            "location": "/changes/#300", 
+            "text": "Please be aware: updating to this version requires applying a database migration. All clients will need to reauthenticate.   Big performance fix: Introduction of token_key field to avoid having to compare a login request's token against each and every token in the database (issue #21)  increased test coverage", 
+            "title": "3.0.0"
         }, 
         {
             "location": "/changes/#222", 

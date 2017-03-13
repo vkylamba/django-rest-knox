@@ -104,6 +104,8 @@
             
                 <li class="toctree-l3"><a href="#changelog">Changelog</a></li>
                 
+                    <li><a class="toctree-l4" href="#300">3.0.0</a></li>
+                
                     <li><a class="toctree-l4" href="#222">2.2.2</a></li>
                 
                     <li><a class="toctree-l4" href="#221">2.2.1</a></li>
@@ -156,6 +158,12 @@
             <div class="section">
               
                 <h1 id="changelog">Changelog</h1>
+<h2 id="300">3.0.0</h2>
+<p><strong>Please be aware: updating to this version requires applying a database migration. All clients will need to reauthenticate.</strong></p>
+<ul>
+<li>Big performance fix: Introduction of token_key field to avoid having to compare a login request's token against each and every token in the database (issue #21)</li>
+<li>increased test coverage</li>
+</ul>
 <h2 id="222">2.2.2</h2>
 <ul>
 <li>Bugfix: invalid token length does no longer trigger a server error</li>
